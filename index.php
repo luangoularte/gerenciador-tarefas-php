@@ -68,7 +68,7 @@ if (isset($_GET['key'])) {
     <div class="separator">
 
     </div>
-    <div class="list-tasks">
+    <div class="list-tasks"> 
         <?php 
             if (isset($_SESSION["tasks"])) {
                 echo "<ul>";
