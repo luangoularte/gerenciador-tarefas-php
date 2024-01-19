@@ -19,10 +19,7 @@ if (isset($_GET["clear"])) {
     unset($_SESSION["tasks"]);
 }
 
-if (isset($_GET['key'])) {
-    array_splice($_SESSION['tasks'], $_GET['key'], 1);
-    unset($_GET['key']);
-}
+
 ?>
 
 
@@ -46,7 +43,7 @@ if (isset($_GET['key'])) {
         <h1>Gerenciador de tarefas</h1>
     </div>
     <div class="form">
-        <form action="task.php" method="post">
+        <form action="task.php" method="post" enctype="multipart/form-data">
             <input type="hidden" name="insert" value="insert">
             <label for="task-name">Tarefa:</label>
             <input type="text" name="task_name" placeholder="Nome da Tarefa">
@@ -54,6 +51,8 @@ if (isset($_GET['key'])) {
             <input type="text" name="task_description" placeholder="Descrição da Tarefa">
             <label for="task_date">Data</label>
             <input type="date" name="task_date">
+            <label for="task_image">Imagem:</label>
+            <input type="file" name="task_image">
             <button type="submit">Cadastrar</button>
         </form>
         <?php 
@@ -80,7 +79,7 @@ if (isset($_GET['key'])) {
                         <script>
                             function deletar$key(){
                                 if (confirm('Confirmar remoção?')) {
-                                    window.location = 'http://localhost:8080/cursophp/gerentarefas/?key=$key';
+                                    window.location = 'http://localhost:8080/cursophp/gerentarefas/task.php?key=$key';
                                 }
                                 return false;
                             } 
