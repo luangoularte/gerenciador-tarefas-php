@@ -6,9 +6,9 @@ if (isset($_POST["task_name"])) {
     if ($_POST["task_name"] != ""){
 
         if(isset($_FILES["task_image"])) {
-            $ext = strtolower(substr($_FILES["task-image"]["name"], -4));
+            $ext = strtolower(substr($_FILES["task_image"]["name"], -4));
             $file_name = md5(date("Y.m.d.H.i.s")) . $ext;
-            $dir = "Uploads/";
+            $dir = "uploads/";
 
             move_uploaded_file($_FILES["task_image"]["tmp_name"], $dir.$file_name);
         }
@@ -19,6 +19,8 @@ if (isset($_POST["task_name"])) {
             "task_date" => $_POST["task_date"],
             "task_image" => $file_name
         ];
+
+        
 
         array_push($_SESSION["tasks"], $data);
         unset($_POST["task_name"]);

@@ -1,5 +1,11 @@
 <?php 
 
+require __DIR__ . "/connect.php";
+
+$stmt = $conn->prepare("SELECT * FROM tasks");
+$stmt->execute();
+$stmt->setFetchMode(PDO::FETCH_ASSOC);
+
 session_start();
 
 if (!isset($_SESSION["tasks"])) {
@@ -13,10 +19,6 @@ if (isset($_GET["task_name"])) {
     } else {
         $_SESSION["message"] = "O campo nome da tarefa não pode ser vazio!";
     }
-}
-
-if (isset($_GET["clear"])) {
-    unset($_SESSION["tasks"]);
 }
 
 
@@ -69,17 +71,17 @@ if (isset($_GET["clear"])) {
     </div>
     <div class="list-tasks"> 
         <?php 
-            if (isset($_SESSION["tasks"])) {
+            
                 echo "<ul>";
 
-                foreach ($_SESSION["tasks"] as $key => $task) {
+                foreach ($stmt->fetchAll() as $task) {
                     echo "<li>
-                        <span>". $task['task_name'] ."</span>
-                        <button type='button' class='btn-clear' onclick='deletar$key()'>Remover</button>
+                        <a href='details.php?key=". $task["id"] ."'>". $task['task_name'] ."</a>
+                        <button type='button' class='btn-clear' onclick='deletar". $task["id"] ."()'>Remover</button>
                         <script>
-                            function deletar$key(){
+                            function deletar". $task["id"] ."(){
                                 if (confirm('Confirmar remoção?')) {
-                                    window.location = 'http://localhost:8080/cursophp/gerentarefas/task.php?key=$key';
+                                    window.location = 'http://localhost:8080/cursophp/gerentarefas/task.php?key=". $task["id"] ."';
                                 }
                                 return false;
                             } 
@@ -88,14 +90,11 @@ if (isset($_GET["clear"])) {
                 }
 
                 echo "</ul>";
-            }
+            
         
         ?>
         
-        <form action="" method="get">
-            <input type="hidden" name="clear" value="clear">
-            <button type="submit" class="btn-clear">Limpar Tarefas</button>
-        </form>
+        
     </div>
     <div class="footer">
         <p>Desenvolvido por @luangoularte</p>
